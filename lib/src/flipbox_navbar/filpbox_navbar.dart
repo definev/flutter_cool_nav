@@ -56,10 +56,10 @@ class FlipBoxNavigationBar extends StatefulWidget {
   final ValueChanged<int>? onTap;
 
   /// Defines the size and color of the item's icon when it is selected.
-  final IconThemeData selectedItemTheme;
+  final IconThemeData? selectedItemTheme;
 
   /// Defines the size and color of the item's icon when it is unselected.
-  final IconThemeData unselectedItemTheme;
+  final IconThemeData? unselectedItemTheme;
 
   /// Defines the style of the item's name when it is selected.
   final TextStyle? textStyle;
@@ -102,9 +102,7 @@ class FlipBoxNavigationBarItem {
     this.selectedBackgroundColor = Colors.blue,
     this.unselectedBackgroundColor = Colors.lightBlue,
     unselectedIcon,
-  })  : assert(name != null),
-        assert(selectedIcon != null),
-        unselectedIcon = unselectedIcon ?? selectedIcon;
+  }) : unselectedIcon = unselectedIcon ?? selectedIcon;
 
   /// The text to be displayed for the selected item.
   final String name;
