@@ -31,10 +31,10 @@ class SpotlightBottomNavigationBar extends StatefulWidget {
   /// The [spotlightGradient] parameter can be used to give a custom [Gradient]
   /// for the spotlight.
   SpotlightBottomNavigationBar({
-    Key key,
-    @required this.items,
+    Key? key,
+    required this.items,
     this.onTap,
-    this.currentIndex,
+    required this.currentIndex,
     this.darkTheme = true,
     this.unselectedItemColor = const Color(0xff666666),
     this.selectedItemColor = const Color(0xffffffff),
@@ -68,7 +68,7 @@ class SpotlightBottomNavigationBar extends StatefulWidget {
   /// The stateful widget that creates the bottom navigation bar needs to keep
   /// track of the index of the selected [SpotlightBottomNavigationBar] and call
   /// `setState` to rebuild the bottom navigation bar with the new [currentIndex].
-  final ValueChanged<int> onTap;
+  final ValueChanged<int>? onTap;
 
   /// The index of the selected [SpotlightBottomNavigationBarItem] in [items].
   final int currentIndex;
@@ -97,7 +97,7 @@ class SpotlightBottomNavigationBar extends StatefulWidget {
   ///
   /// It this field is provided, it must contain non-null [IconThemeData.size]
   /// and [IconThemeData.color] properties.
-  final IconThemeData unselectedIconTheme;
+  final IconThemeData? unselectedIconTheme;
 
   /// The size, opacity, and color of the icon in the currently selected
   /// [SpotlightBottomNavigationBarItem.icon].
@@ -107,11 +107,11 @@ class SpotlightBottomNavigationBar extends StatefulWidget {
   ///
   /// It this field is provided, it must contain non-null [IconThemeData.size]
   /// and [IconThemeData.color] properties.
-  final IconThemeData selectedIconTheme;
+  final IconThemeData? selectedIconTheme;
 
   /// The custom [Gradient] to use for the spotlight of the selected
   /// [BottomNavigationBarItem].
-  final Gradient spotlightGradient;
+  final Gradient? spotlightGradient;
 
   @override
   _SpotlightBottomNavigationBarState createState() =>
@@ -120,10 +120,10 @@ class SpotlightBottomNavigationBar extends StatefulWidget {
 
 class _SpotlightBottomNavigationBarState
     extends State<SpotlightBottomNavigationBar> with TickerProviderStateMixin {
-  AnimationController animation;
+  late AnimationController animation;
 
   // The previous selectedIndex of the widget. Used to animate the top bar.
-  int oldIndex;
+  late int oldIndex;
 
   _resetState() {
     animation = AnimationController(
@@ -186,7 +186,7 @@ class _SpotlightBottomNavigationBarState
           ),
           onTap: () {
             if (widget.onTap != null) {
-              widget.onTap(i);
+              widget.onTap!(i);
             }
           },
           behavior: HitTestBehavior.translucent,
@@ -265,7 +265,7 @@ class SpotlightBottomNavigationBarItem {
   /// Creates an item that is used with [SpotlightBottomNavigationBar.items].
   ///
   /// The argument [icon] should not be null when used in a Material Design's [BottomNavigationBar].
-  SpotlightBottomNavigationBarItem({@required this.icon})
+  SpotlightBottomNavigationBarItem({required this.icon})
       : assert(icon != null);
 
   /// The Icon which will be shown on the [SpotlightBottomNavigationBar]
@@ -274,10 +274,10 @@ class SpotlightBottomNavigationBarItem {
 
 class _SelectedItemHeaderPainter extends CustomPainter {
   _SelectedItemHeaderPainter({
-    @required this.oldPosition,
-    @required this.newPosition,
-    @required this.animation,
-    @required this.count,
+    required this.oldPosition,
+    required this.newPosition,
+    required this.animation,
+    required this.count,
     this.iconSize = 24,
     this.color = Colors.white,
   })  : assert(animation != null),
@@ -328,8 +328,8 @@ class _SelectedItemHeaderPainter extends CustomPainter {
 class _SpotlightPainter extends CustomPainter {
   final Offset offset;
   final double iconSize;
-  final Gradient gradient;
-  final Color color;
+  final Gradient? gradient;
+  final Color? color;
 
   _SpotlightPainter({
     this.iconSize = 24,
@@ -345,11 +345,11 @@ class _SpotlightPainter extends CustomPainter {
     var rect = Rect.fromLTWH(0, 0, spotlightSize, spotlightSize);
     var p = Paint()
       ..shader = (gradient != null)
-          ? gradient.createShader(rect)
+          ? gradient!.createShader(rect)
           : LinearGradient(colors: <Color>[
-              color.withAlpha(64),
-              color.withAlpha(36),
-              color.withAlpha(0)
+              color!.withAlpha(64),
+              color!.withAlpha(36),
+              color!.withAlpha(0)
             ], begin: Alignment.topCenter, end: Alignment.bottomCenter)
               .createShader(rect);
     var path = Path()..addPolygon(getPath(size), true);
@@ -372,21 +372,21 @@ class _SpotlightPainter extends CustomPainter {
 }
 
 class _SpotlightNavigationBarTile extends StatelessWidget {
-  final IconData icon;
-  final IconThemeData iconTheme;
+  final IconData? icon;
+  final IconThemeData? iconTheme;
 
-  const _SpotlightNavigationBarTile({Key key, this.icon, this.iconTheme})
+  const _SpotlightNavigationBarTile({Key? key, this.icon, this.iconTheme})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: max(56, iconTheme.size + 24),
-      width: max(56, iconTheme.size + 24),
+      height: max(56, iconTheme!.size! + 24),
+      width: max(56, iconTheme!.size! + 24),
       child: Center(
         child: IconTheme(
           child: Icon(icon),
-          data: iconTheme,
+          data: iconTheme!,
         ),
       ),
     );
